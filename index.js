@@ -4,7 +4,7 @@ const fileUpload = require("express-fileupload")
 const cors = require("cors")
 const helmet = require("helmet")
 const morgan = require("morgan")
-const api = require("../lender/app/v1/api")
+const api = require("./app/v1/api")
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -15,16 +15,16 @@ app.use(express.urlencoded({ extended: false }))
 app.use(fileUpload({ useTempFiles: true }))
 app.use(cors())
 app.use(
-    helmet({
-        crossOriginEmbedderPolicy: true, // Contoh fitur lain
-    })
+  helmet({
+    crossOriginEmbedderPolicy: true, // Contoh fitur lain
+  })
 )
 app.use((req, res, next) => {
-    res.setHeader(
-        "Permissions-Policy",
-        "camera=(), microphone=(), geolocation=()" // Ganti sesuai kebutuhan
-    )
-    next()
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()" // Ganti sesuai kebutuhan
+  )
+  next()
 })
 app.use(morgan("combined"))
 
@@ -32,7 +32,7 @@ app.use(morgan("combined"))
 app.use("/v1/", api)
 
 app.use((req, res, next) => {
-    res.status(404).send(`
+  res.status(404).send(`
     <!DOCTYPE html>
   <html lang="en">
 
@@ -220,16 +220,16 @@ h1{
 
 // Redirect all other routes
 app.get("*", (req, res) => {
-    res.redirect("https://minjem.com")
+  res.redirect("https://minjem.com")
 })
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).json({ message: "Something went wrong!", error: err.message })
+  console.error(err.stack)
+  res.status(500).json({ message: "Something went wrong!", error: err.message })
 })
 
 // Start Server
 app.listen(port, () => {
-    console.log("Server connected on port " + port)
+  console.log("Server connected on port " + port)
 })
