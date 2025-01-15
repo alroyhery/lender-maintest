@@ -118,14 +118,14 @@ module.exports = {
         });
     },
     
-    insertImages: async (imagedata) => {
+    insertImages: async (data) => {
         return new Promise((resolve, reject) => {
             const query = `
-                INSERT INTO tbl_doc (foto_ktp, foto_selfi, foto_npwp, id_regis)
-                VALUES (?, ?, ?, ?);
-            `;
+                INSERT INTO tbl_doc (foto_ktp, foto_selfi, foto_npwp)
+                VALUES 
+                    ('${data.img[0]}','${data.img[1]}','${data.img[2]}')`;
             
-            const values = [imagedata.foto_ktp, imagedata.foto_selfi, imagedata.foto_npwp, imagedata.id_regis];
+            const values = [data.img[0], data.img[1], data.img[2]];
     
             sql.query(query, values, (err, result) => {
                 if (err) {

@@ -16,13 +16,13 @@ const storage = multer.diskStorage({
         cb(null, './upload_berkas/user'); // Directory to save uploaded files
     },
     filename: async (req, file, cb) => {
-        // const latestUser = await user_model.getMostRecentUserId();
+        const latestUser = await user_model.getMostRecentUserId();
 
-        //     if (!latestUser) {
-        //         return cb(new Error('Failed to retrieve user ID'));
-        //     }
+            if (!latestUser) {
+                return cb(new Error('Failed to retrieve user ID'));
+            }
 
-        // const id_regis = latestUser.id_regis;
+        const id_regis = latestUser.id_regis;
         id_regis = req.id_regis;  // Access id_regis passed from the controller
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
