@@ -316,113 +316,73 @@ module.exports = {
 
 
 
-            // upload.array('images_berkas', 3)(req, res, async (err) => {
-
-            //     console.log(req.files)
-            //     if (err) {
-            //         console.error("Error occurred:", err);
-            //         return res.status(500).json({
-            //             status: false,
-            //             message: `Multersdadas Error: ${err.message}`,
-            //         });
-            //     }
-
-            //     console.log("Uploaded files:", req.files);
-            //     console.log(req.body)
-            //     console.log(req.files)
-            //     // Check if files were uploaded
-            //     if (!req.files || req.files.length !== 3) {
-            //         return res.status(400).json({
-            //             status: false,
-            //             message: "You must upload exactly 3 images.",
-            //         });
-            //     }
 
 
-
-            //     console.log("Uploaded files:", req.files);
-
-            //     // Read uploaded images as binary data
-            //     let img_ktp, img_npwp, img_selfie;
-
-            //     req.files.forEach(file => {
-            //         try {
-            //             console.log(`File Fieldname: ${file.fieldname}, Filename: ${file.filename}`);
-            //             // const imageData = fs.readFileSync(file.path);
-            //             console.log(req.files[0].filename)
-
-            //             const baseName = path.parse(file.originalname).name;
-
-            //             if (baseName.includes('img_ktp')) {
-            //                 img_ktp = file.filename;
-            //             } else if (baseName.includes('img_npwp')) {
-            //                 img_npwp = file.filename;
-            //             } else if (baseName.includes('img_selfie')) {
-            //                 img_selfie = file.filename;
-            //             }
-            //         } catch (readError) {
-            //             console.error(`asdasError reading file ${file.fieldname}:`, readError.message);
-            //         }
-            //     });
-
-            //     // const img_ktp = req.files['img_ktp'] ? req.files['img_ktp'][0].path : null;
-            //     // const img_npwp = req.files['img_npwp'] ? req.files['img_npwp'][0].path : null;
-            //     // const img_selfie = req.files['img_selfie'] ? req.files['img_selfie'][0].path : null;
-
-
-            //     console.log(img_ktp)
-            //     console.log(img_npwp)
-            //     console.log(img_selfie)
-            //     console.log("body", req.body)
-            //     // Validasi input kosong
-
-
-
-            //     // if (file.originalname === 'img_ktp.png') {
-            //     //     img_ktp = file.name;
-            //     // }
-
-            //     if (!img_ktp || !img_npwp || !img_selfie) {
-            //         return res.status(400).json({ status: false, message: "saddAll images (KTP, NPWP, Selfie) must be uploaded." });
-            //     }
-
-            //     console.log("KTP Image Path:", img_ktp);
-            //     console.log("NPWP Image Path:", img_npwp);
-            //     console.log("Selfie Image Path:", img_selfie);
-
-
-            //     // Check if all images were properly assigned
-            //     if (!img_ktp || !img_npwp || !img_selfie) {
-            //         return res.status(400).json({
-            //             status: false,
-            //             message: "All images (KTP, NPWP, Selfie) must be uploaded.",
-            //         });
-            //     }
-
-
-
-            //     return res.status(200).json({
-            //         status: true,
-            //         message: "Images uploaded successfully."
-            //     });
-
-            //     res.send("File uploaded successfully!");
-            // });
-
-            const imagedata = { img_ktp, img_selfie, img_npwp, id_regis }
-
-
-            const saveimage = await user_model.insertImages(imagedata)
+            let insertId = saveResult.data.insertId
 
 
 
 
 
-            return res.status(200).json({
-                status: true,
-                message: "Registrasi berhasil",
-                data: {},
-            })
+            const berkas = req.files.images_berkas
+
+
+
+            let param = []
+            let img_berkas = []
+
+            let path_upload = ""
+            path_upload = "./upload_berkas/user/"
+
+            try {
+                const datetime = moment().format("YYYYMMDDhhmmss")
+                let is_update = false
+
+
+                for (var xx = 0; xx < berkas.length; xx++) {
+                    name_berkas = berkas[xx].name.split("-")
+                    format_berkas = berkas[xx].name.split(".")
+                    berkas_apk = name_berkas[0]
+
+
+                    param.push(
+                        berkas[xx].mv(
+                            path_upload + format_berkas[0] + "_" + insertId + "_" + datetime + "." + format_berkas[1]
+                        )
+                    )
+
+                    img_berkas.push(format_berkas[0] + "_" + insertId + "_" + datetime + "." + format_berkas[1])
+                }
+
+                await Promise.all(param, img_berkas).then(() => {
+                    user.insertImages(img_berkas, insertId).then(() => {
+                        is_update = true
+                        return res.status(200).json({
+                            status: true,
+                            message: "Registrasi berhasil",
+                            data: {},
+                        })
+
+                    })
+                })
+
+
+
+
+
+
+            } catch (error) {
+                console.log(error)
+                log_register.log("info", "E Upload Foto Ktp dan Foto Selfi Error : " + error)
+                return res.json({
+                    status: false,
+                    message: "Update Foto Ktp dan Foto Selfi gagal",
+                    data: data,
+                })
+            }
+
+
+
         } catch (err) {
             log_register.log("error", `Regis Gagal | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : | ${JSON.stringify(err)}`)
             return res.status(500).json({
@@ -461,14 +421,20 @@ module.exports = {
                 img_berkas.push("test" + "_" + datetime + "_" + format_berkas[0] + "." + format_berkas[1])
 
                 await Promise.all(param)
-                // data.img = img_berkas
+                data = img_berkas
             }
+
+            await user.insertImages(data).then((result_update) => {
+                is_update = true
+            })
 
             return res.json({
                 status: true,
                 message: "Update Foto Ktp dan Foto Selfi berhasil",
                 // data: data,
             })
+
+
 
             // if (is_update) {
             //     return res.json({

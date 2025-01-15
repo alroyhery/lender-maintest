@@ -62,7 +62,7 @@ module.exports = {
             })
         })
     },
-    saveUserData: (data) => {
+    saveUserData: async (data) => {
         return new Promise((resolve, reject) => {
             const query = `
                 INSERT INTO tbl_regis 
@@ -118,14 +118,15 @@ module.exports = {
         });
     },
     
-    insertImages: async (data) => {
+    insertImages: async (data, insertId) => {
+        
         return new Promise((resolve, reject) => {
             const query = `
-                INSERT INTO tbl_doc (foto_ktp, foto_selfi, foto_npwp)
+                INSERT INTO tbl_doc (foto_ktp, foto_selfi, foto_npwp, id_regis)
                 VALUES 
-                    ('${data.img[0]}','${data.img[1]}','${data.img[2]}')`;
+                    ('${data[0]}','${data[2]}','${data[1]}', '${insertId}')`;
             
-            const values = [data.img[0], data.img[1], data.img[2]];
+            const values = [data[0], data[1], data[2]];
     
             sql.query(query, values, (err, result) => {
                 if (err) {
