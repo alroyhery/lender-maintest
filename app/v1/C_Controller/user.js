@@ -1,6 +1,7 @@
 const user_model = require("../B_Model/user")
 const log_general = require("../E_Log/log_general")
 const log_register = require("../E_Log/log_register")
+const log_login = require("../E_Log/log_login")
 const jwt = require("jsonwebtoken")
 const moment = require("moment")
 const nodemailer = require("nodemailer")
@@ -96,7 +97,7 @@ module.exports = {
             })
         }
     },
-    // uploadgasa: async (req, res) => {
+
 
     //     upload.array('images_berkas', 3)(req, res, async (err) => {
 
@@ -495,6 +496,81 @@ module.exports = {
             })
         }
 
+    },
+
+    login: async (req, res) => {
+
+        // try {
+        const data = req.body
+        // validasi username dan password
+        if (!data.username) {
+            return res.status(400).json({
+                status: false,
+                message: "Username wajib diisi",
+                data: {},
+            })
+        }
+        if (!data.sandi) {
+            return res.status(400).json({
+                status: false,
+                message: "sandi wajib diisi",
+                data: {},
+            })
+        }
+
+        // Check user avaiable in database or not
+        await user_model.login(data).then((response) => {
+            if (response.data === "-") {
+                return res.status(401).json({
+                    status: false,
+                    message: "Username atau sandi anda salah",
+                    data: {},
+                })
+            } else {
+
+                const generateToken = (payload) => {
+                    const secretKey = process.env.SECRET_KEY; // Replace with your own secret key
+                    const options = {
+                        expiresIn: '15m', // Token expiration time
+                    };
+
+                    const token = jwt.sign({ payload }, secretKey, options);
+                    return token;
+                };
+
+                const token = generateToken(response.data[0]);
+
+                if (token) {
+                    log_login.log("info", `Get Token | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : OK`)
+                    return res.json({
+                        status: true,
+                        message: "OK",
+                        data: token,
+                    })
+                } else {
+                    log_login.log("error", `Error 500 | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : Koneksi gagal mohon coba lagi`)
+                    return res.status(500).json({
+                        status: false,
+                        message: "Koneksi gagal mohon coba lagi.",
+                        data: {},
+                    })
+                }
+
+            }
+
+
+
+        })
+
+
+        // } catch(err) {
+        //     log_login.log("error", `Login Gagal | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : | ${JSON.stringify(err)}`)
+        //     return res.status(500).json({
+        //         status: false,
+        //         message: "Terjadi kesalahan pada server.",
+        //         data: {},
+        //     })
+        // }
     }
 
 }

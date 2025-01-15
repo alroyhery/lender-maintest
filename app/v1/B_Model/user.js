@@ -1,5 +1,6 @@
 const sql = require("../A_Config/database")
 const log_register = require("../E_Log/log_register")
+const log_login = require("../E_Log/log_login")
 const moment = require("moment")
 const axios = require("axios")
 
@@ -117,24 +118,47 @@ module.exports = {
             }
         });
     },
-    
+
     insertImages: async (data) => {
         return new Promise((resolve, reject) => {
             const query = `
                 INSERT INTO tbl_doc (foto_ktp, foto_selfi, foto_npwp)
                 VALUES 
                     ('${data.img[0]}','${data.img[1]}','${data.img[2]}')`;
-            
+
             const values = [data.img[0], data.img[1], data.img[2]];
-    
+
             sql.query(query, values, (err, result) => {
                 if (err) {
                     console.error("Error saving image data:", err.message);
                     return reject(err);
                 }
-    
+
                 resolve(result);  // Return the result of the insert operation
             });
         });
     },
+
+    login: async (data) => {
+        return new Promise((resolve, reject) => {
+
+            const query = `
+                SELECT *
+                FROM tbl_regis a
+                WHERE (a.username = ? AND a.sandi = ?);
+            `
+            sql.query(query, [data.username, data.sandi], (err, result) => {
+                if (err) {
+                    log_login.log("error", `Get Data user error | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : ${err.message}`)
+                    return reject(err)
+                }
+                if (result.length > 0) {
+                    resolve({ data: result })
+                } else {
+                    resolve({ data: "-" })
+                }
+            })
+        })
+    }
+
 }
