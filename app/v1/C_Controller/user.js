@@ -312,6 +312,36 @@ module.exports = {
                 })
             }
 
+
+            const cekberkas = req.files.images_berkas
+
+            //validasi tipe file dan banyak gambar
+            for (let xx = 0; xx < cekberkas.length; xx++) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(cekberkas[xx].mimetype)) {
+                    return res.status(400).json({
+                        status: false,
+                        message: "Hanya menerima gambar.",
+                        data: {}
+                    });
+                } 
+            }
+
+            if (!req.files.images_berkas || cekberkas.length !== 3) {
+                return res.status(400).json({
+                    status: false,
+                    message: "Harus upload 3 gambar.",
+                    data: {}
+                });
+            }
+
+
+           
+
+        //     console.log(cekberkas)
+            
+
+
             // Simpan data ke database
             const saveResult = await user_model.saveUserData(data)
 
@@ -326,6 +356,10 @@ module.exports = {
 
 
             const berkas = req.files.images_berkas
+            console.log(berkas)
+            
+
+            
 
 
 
@@ -345,6 +379,7 @@ module.exports = {
                     format_berkas = berkas[xx].name.split(".")
                     berkas_apk = name_berkas[0]
 
+                   
 
                     param.push(
                         berkas[xx].mv(
@@ -372,7 +407,7 @@ module.exports = {
 
 
 
-            } catch (error) {
+            }catch (error) {
                 console.log(error)
                 log_register.log("info", "E Upload Foto Ktp dan Foto Selfi Error : " + error)
                 return res.json({
@@ -384,7 +419,8 @@ module.exports = {
 
 
 
-        } catch (err) {
+        } 
+        catch (err) {
             log_register.log("error", `Regis Gagal | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : | ${JSON.stringify(err)}`)
             return res.status(500).json({
                 status: false,
