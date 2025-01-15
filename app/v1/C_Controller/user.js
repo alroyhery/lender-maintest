@@ -439,45 +439,36 @@ module.exports = {
         let param = []
         let img_berkas = []
 
+        let path_upload = ""
+        path_upload = "./upload_berkas/user/"
+
         try {
             const datetime = moment().format("YYYYMMDDhhmmss")
             let berkas_name = {}
             let is_update = false
 
-            console.log(berkas)
+            for (var xx = 0; xx < berkas.length; xx++) {
+                name_berkas = berkas[xx].name.split("-")
+                format_berkas = berkas[xx].name.split(".")
+                berkas_apk = name_berkas[0]
 
+                param.push(
+                    berkas[xx].mv(
+                        path_upload + "test" + "_" + datetime + "_" + format_berkas[0] + "." + format_berkas[1]
+                    )
+                )
 
+                img_berkas.push("test" + "_" + datetime + "_" + format_berkas[0] + "." + format_berkas[1])
 
-            // for (var i = 0; i < berkas.length; i++) {
+                await Promise.all(param)
+                // data.img = img_berkas
+            }
 
-            //     name_berkas = berkas[i].name.split("_")
-            //     format_berkas = berkas[i].name.split(".")
-            //     berkas_apk = name_berkas[0]
-            //     // for (var x = i; x < result_berkas.length; x++) {
-            //     //     name_berkas = berkas[i].name.split("_")
-            //     //     format_berkas = berkas[i].name.split(".")
-            //     //     berkas_apk = name_berkas[0]
-
-            //     // }
-
-            //     let path_upload = ""
-            //     path_upload = "./upload_berkas/user/"
-
-            //     param.push(
-            //         berkas[i].mv(
-            //             path_upload + "test" + "_" + datetime + "_" + name_berkas[i].id_title + "." + format_berkas[1]
-            //         )
-            //     )
-            //     img_berkas.push("test" + "_" + datetime + "_" + name_berkas[i].id_title + "." + format_berkas[1])
-
-            //     await Promise.all(param)
-            //     data.img = img_berkas
-
-            // }
-
-            // await user.insertImages(data).then((result_update) => {
-            //     is_update = true
-            // })
+            return res.json({
+                status: true,
+                message: "Update Foto Ktp dan Foto Selfi berhasil",
+                // data: data,
+            })
 
             // if (is_update) {
             //     return res.json({
@@ -493,9 +484,10 @@ module.exports = {
             //     })
             // }
 
+
         } catch (error) {
             console.log(error)
-            logger.log("info", "E Upload Foto Ktp dan Foto Selfi Error : " + error)
+            log_register.log("info", "E Upload Foto Ktp dan Foto Selfi Error : " + error)
             return res.json({
                 status: false,
                 message: "Update Foto Ktp dan Foto Selfi gagal",
