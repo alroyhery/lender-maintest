@@ -25,7 +25,7 @@ module.exports = {
             // Verifikasi passToken dengan environment variable
             if (passToken === process.env.passToken) {
                 const random = Math.floor(Math.random() * 10000 + 1)
-                const date = moment().format("YYYYMMDDhhmmss")
+                const date = moment().format("YYYYMMDDHHmmss")
 
                 const gabung = `${random}dumi${date}`
 
@@ -67,143 +67,112 @@ module.exports = {
             })
         }
     },
+
+
     sendOtp: async (req, res) => {
         try {
             const { email } = req.body
             const code = Math.floor(Math.random() * 1000000 + 1)
-            const data = { email, code }
-            const cek_email_otp = await user_model.cek_email_otp(data)
+            const letterMail = `<div class=""> <div class="aHl"></ > <div id=":pm" tabindex="-1"></div> <div id=":pc" class="ii gt" jslog="20277; u014N:xr6bB; 1:WyIjdGhyZWFkLWY6MTgyMTMwMzk3NzYwNjUxMDc3NyJd; 4:WyIjbXNnLWY6MTgyMTMwNDUxMDY1MTc2MDMxNiIsbnVsbCxudWxsLG51bGwsMiwxLFsxLDAsMF0sMjksMTg3LG51bGwsbnVsbCxudWxsLG51bGwsbnVsbCwxLG51bGwsbnVsbCxbMywwXSxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbCwwXQ.."> <div id=":pb" class="a3s aiL msg-8383564264117652028"><u></u> <div style="background-color:#f3f5f7;margin:0!important;padding:0!important"><span class="im"> <div style="display:none;font-size:1px;color:#fefefe;line-height:1px;font-family:'Lato',Helvetica,Arial,sans-serif;max-height:0px;max-width:0px;opacity:0;overflow:hidden"> We're thrilled to have you here! Get ready to dive into your new account. </div> </span> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tbody> <tr> <td bgcolor="#fff" align="center"> <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px"> <tbody> <tr> <td align="center" valign="top" style="padding:50px 10px 50px 10px"> <a href="#m_-8383564264117652028_"> <img alt="Logo" src="https://ci3.googleusercontent.com/meips/ADKq_NYniSuJ9j0EaJchQQmoO0oy6D0miHrJsERlgFx635_uiAeXbmCiwTeFH5zb5XCCLhb2pp9DE_rcDQ_MhOsVw3HBf511hCw86XTcDw=s0-d-e1-ft#https://backend.minjem.com/assets/img/logos/digis.jpg" width="200px" style="display:block;font-family:'Lato',Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px" border="0" class="CToWUd" data-bit="iit"> </a> </td> </tr> </tbody> </table> </td> </tr> <tr> <td bgcolor="#f4f4f4" align="center" style="padding:0px 10px 0px 10px"> <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px"> <tbody> <tr> <td bgcolor="#ffffff" align="center" valign="top" style="padding:40px 20px 20px 20px;border-radius:4px 4px 0px 0px;color:#111111;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:48px;font-weight:400;letter-spacing:4px;line-height:48px"> <h1 style="font-size:42px;font-weight:400;margin:0">Hi, SOBAT DIGIS</h1> </td> </tr> </tbody> </table> </td> </tr> <tr> <td bgcolor="#f4f4f4" align="center" style="padding:0px 10px 0px 10px"> <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px"> <tbody> <tr> <td bgcolor="#ffffff" align="left" style="padding:20px 30px 10px 30px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:25px"> <p style="margin:0">Mohon masukkan kode verifikasi</p> </td> </tr> <tr> <td bgcolor="#ffffff" align="left"> <table width="100%" border="0" cellspacing="0" cellpadding="0"> <tbody> <tr> <td bgcolor="#ffffff" align="center" style="padding:20px 30px 60px 30px"> <table border="0" cellspacing="0" cellpadding="0"> <tbody> <tr> <td align="center" style="border-radius:3px" bgcolor="#0183E9"> <a style="font-size:30px;font-family:Helvetica,Arial,sans-serif;color:#ffffff;text-decoration:none;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:2px;border:1px solid #0183e9;display:inline-block"> ` + code + ` </a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </td> </tr> <tr> <td bgcolor="#ffffff" align="left" style="padding:0 30px 10px 20px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:25px"> <p style="margin:0">Mohon untuk tidak membalas email ini.</p> <p style="margin:0">Terima Kasih atas kepercayaan Anda terhadap layanan kami.</p> </td> </tr> <tr> <td bgcolor="#ffffff" align="left" style="padding:0px 30px 40px 20px;border-radius:0px 0px 4px 4px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:25px"> <p style="margin:0">Hormat Kami,<br> <b>PT Digital Inti Generasi</b> </p> </td> </tr> </tbody> </table> </td> </tr> <tr> <td bgcolor="#f4f4f4" align="center" style="padding:0px 10px 0px 10px"> <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px"> <tbody> <tr> <td bgcolor="#f4f4f4" align="left" style="padding:0px 30px 30px 30px;color:#aaaaaa;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;line-height:18px"> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <div class="yj6qo"></div> <div class="adL"> </div> </div> <div class="adL"> </div> </div> </div> <div class="WhmR8e" data-hash="0"></div> </div>`
+            const date = moment().format("YYYYMMDDHHmmss")
+            // expiredOTP 2 Menit
+            const expiredOTP = moment().add(2, 'minutes').format("YYYYMMDDHHmmss")
 
-            if (cek_email_otp.length < 1) {
-                const send_otp = await user_model.sendotp(data)
-                log_general.log("info", `Get Token | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : ${JSON.stringify(send_otp)}`)
-                return res.status(200).json({
-                    status: send_otp.status,
-                    message: send_otp.message,
-                    data: {},
-                })
-            }
-            return res.status(500).json({
-                status: false,
-                message: "Gagal mengirim OTP",
-                data: cek_email_otp.length,
-            })
+            let update = false
+            const data = { email, letterMail, date, code, update }
+
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: 587,
+                secure: false, // use false for STARTTLS; true for SSL on port 465
+                auth: {
+                    user: process.env.SMTP_USER,
+                    pass: process.env.SMTP_PASS
+                }
+            });
+
+
+            // prepare untuk ngirim email
+            const mailOptions = {
+                from: process.env.SENDER_EMAIL,
+                to: data.email,
+                subject: "Kode Verifikasi Registrasi",
+                html: data.letterMail // isi dari email
+            };
+
+            // send ngirim email
+            const info = await transporter.sendMail(mailOptions).then(() => {
+                user_model.cek_email_otp(data).then((result => {
+                    console.log(result)
+                    if (result >= 1) {
+                        data.update = true
+                    } else {
+                        data.update = false
+                    }
+                    user_model.saveOtpAfterSendCode(data).then(() => {
+                        return res.status(200).json({
+                            status: true,
+                            message: "Sukses mengirim OTP",
+                            data: { expiredOTP: expiredOTP },
+                        })
+                    })
+                }))
+            });
         } catch (err) {
-            log_general.log("error", `Error 500 | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : Gagal mengirim OTP`)
             return res.status(500).json({
                 status: false,
-                message: "Gagal mengirim OTP",
-                data: { cek_email_otp },
+                message: "Ada kesalahan pada server.....",
+                data: {},
             })
         }
     },
 
+    confirmOTP: async (req, res) => {
+        try {
+            const { email, code } = req.body;
+            const date = moment().format("YYYYMMDDHHmmss")
+            const expired = 2
+            const data = { code, date, email, expired }
+            // Validate required fields.
+            if (!code || !email) {
+                return res.status(400).json({
+                    status: true,
+                    message: "OTP code harus di isi",
+                    data: {},
+                })
+            }
+            // cek db ada otp ini atau tidak
+            user_model.checkOTPCode(data).then((result) => {
+                console.log(result)
+                if (result === true) {
+                    return res.status(200).json({
+                        status: true,
+                        message: "OTP Benar",
+                        data: {},
+                    })
+                } else if (result === "expired") {
+                    return res.status(400).json({
+                        status: false,
+                        message: "OTP kode telah kadaluarsa, silahkan kirim ulang OTP anda",
+                        data: {},
+                    })
+                } else {
+                    return res.status(400).json({
+                        status: false,
+                        message: "OTP Tidak Benar",
+                        data: {},
+                    })
+                }
 
-    //     upload.array('images_berkas', 3)(req, res, async (err) => {
-
-    //         console.log(req.files)
-    //         if (err) {
-    //             console.error("Error occurred:", err);
-    //             return res.status(500).json({
-    //                 status: false,
-    //                 message: `Multersdadas Error: ${err.message}`,
-    //             });
-    //         }
-
-    //         console.log("Uploaded files:", req.files);
-    //         console.log(req.body)
-    //         console.log(req.files)
-    //         // Check if files were uploaded
-    //         if (!req.files || req.files.length !== 3) {
-    //             return res.status(400).json({
-    //                 status: false,
-    //                 message: "You must upload exactly 3 images.",
-    //             });
-    //         }
-
-
-
-    //         console.log("Uploaded files:", req.files);
-
-    //           // Read uploaded images as binary data
-    //         let img_ktp, img_npwp, img_selfie;
-
-    //         req.files.forEach(file => {
-    //             try {
-    //                 console.log(`File Fieldname: ${file.fieldname}, Filename: ${file.filename}`);
-    //                 // const imageData = fs.readFileSync(file.path);
-    //                 console.log(req.files[0].filename)
-
-    //                 const baseName = path.parse(file.originalname).name;
-
-    //             if (baseName.includes('img_ktp')) {
-    //                 img_ktp = file.filename;
-    //             } else if (baseName.includes('img_npwp')) {
-    //                 img_npwp = file.filename;
-    //             } else if (baseName.includes('img_selfie')) {
-    //                 img_selfie = file.filename;
-    //             }
-    //             } catch (readError) {
-    //                 console.error(`asdasError reading file ${file.fieldname}:`, readError.message);
-    //             }
-    //         });
-
-    //         // const img_ktp = req.files['img_ktp'] ? req.files['img_ktp'][0].path : null;
-    //         // const img_npwp = req.files['img_npwp'] ? req.files['img_npwp'][0].path : null;
-    //         // const img_selfie = req.files['img_selfie'] ? req.files['img_selfie'][0].path : null;
-
-
-    //         console.log(img_ktp)
-    //         console.log(img_npwp)
-    //         console.log(img_selfie)
-    //         console.log("body", req.body)
-    //         // Validasi input kosong
-
-
-
-    //             // if (file.originalname === 'img_ktp.png') {
-    //             //     img_ktp = file.name;
-    //             // }
-
-    //             if (!img_ktp || !img_npwp || !img_selfie) {
-    //                 return res.status(400).json({ status: false, message: "saddAll images (KTP, NPWP, Selfie) must be uploaded." });
-    //             }
-
-    //             console.log("KTP Image Path:", img_ktp);
-    //             console.log("NPWP Image Path:", img_npwp);
-    //             console.log("Selfie Image Path:", img_selfie);
-
-
-    //             // Check if all images were properly assigned
-    //             if (!img_ktp || !img_npwp || !img_selfie) {
-    //                 return res.status(400).json({
-    //                     status: false,
-    //                     message: "All images (KTP, NPWP, Selfie) must be uploaded.",
-    //                 });
-    //             }
-
-
-
-    //             return res.status(200).json({
-    //                 status: true,
-    //                 message: "Images uploaded successfully."
-    //             });
-
-    //             res.send("File uploaded successfully!");
-    //         });
-    //         //akhir
-
-
-    //         // const latestUser = await user_model.getMostRecentUserId();
-
-    //                 //     if (!latestUser) {
-    //                 //         return cb(new Error('Failed to retrieve user ID'));
-    //                 //     }
-
-    //                 // const id_regis = latestUser.id_regis;
-
-
-    // },
+            });
+        } catch (err) {
+            return res.status(500).json({
+                status: false,
+                message: "Ada kesalahan pada server",
+                data: {},
+            })
+        }
+    },
     regis: async (req, res) => {
         try {
             const { nama_lengkap, username, sandi, npwp, nik, email, no_hp, jenis_kelamin, tgl_lahir } = req.body
@@ -324,7 +293,7 @@ module.exports = {
                         message: "Hanya menerima gambar.",
                         data: {}
                     });
-                } 
+                }
             }
 
             if (!req.files.images_berkas || cekberkas.length !== 3) {
@@ -336,10 +305,10 @@ module.exports = {
             }
 
 
-           
 
-        //     console.log(cekberkas)
-            
+
+            //     console.log(cekberkas)
+
 
 
             // Simpan data ke database
@@ -357,9 +326,9 @@ module.exports = {
 
             const berkas = req.files.images_berkas
             console.log(berkas)
-            
 
-            
+
+
 
 
 
@@ -379,7 +348,7 @@ module.exports = {
                     format_berkas = berkas[xx].name.split(".")
                     berkas_apk = name_berkas[0]
 
-                   
+
 
                     param.push(
                         berkas[xx].mv(
@@ -407,7 +376,7 @@ module.exports = {
 
 
 
-            }catch (error) {
+            } catch (error) {
                 console.log(error)
                 log_register.log("info", "E Upload Foto Ktp dan Foto Selfi Error : " + error)
                 return res.json({
@@ -419,7 +388,7 @@ module.exports = {
 
 
 
-        } 
+        }
         catch (err) {
             log_register.log("error", `Regis Gagal | TIME : ${moment().format("YYYY-MM-DD HH:mm:ss")} | RESULT : | ${JSON.stringify(err)}`)
             return res.status(500).json({

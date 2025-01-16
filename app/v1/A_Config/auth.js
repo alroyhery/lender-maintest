@@ -5,7 +5,7 @@ const crypto = require("crypto")
 // Konfigurasi rate limiter
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 menit
-    max: 5, // Maksimal 10 permintaan per IP dalam 15 menit
+    max: 1000, // Maksimal 10 permintaan per IP dalam 15 menit
     handler: (req, res) => {
         res.status(429).json({
             status: false,
